@@ -8,9 +8,14 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.coolweather.MainActivity">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+<!--fragment里面要有名字关联一个fragment-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <fragment
+            android:id="@+id/choose_area_fragment"
+            android:name="com.example.coolweather.ChooseAreaFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        </FrameLayout>
 </RelativeLayout>
