@@ -13,10 +13,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.coolweather.db.City;
 import com.example.coolweather.db.County;
 import com.example.coolweather.db.Province;
@@ -69,7 +71,7 @@ public class ChooseAreaFragment extends Fragment {
     private County selectedCounty;
     //当前级别，是省或市，或县
     private int currentLevel;
-
+    private ImageView menubk;
 
     @Nullable
     @Override
@@ -79,7 +81,9 @@ public class ChooseAreaFragment extends Fragment {
         titleText = (TextView) view.findViewById(R.id.title_text);
         backButton = (Button) view.findViewById(R.id.back_button);
         listView = (ListView) view.findViewById(R.id.list_view);
-        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, dataList);
+        menubk=view.findViewById(R.id.menu_bk);
+        Glide.with(this).load(R.drawable.menubk).into(menubk);
+        adapter = new ArrayAdapter<>(getContext(), R.layout.listview_item, dataList);
         listView.setAdapter(adapter);
         Log.d("ChooseAreaFragment","onCreateView");
         return view;

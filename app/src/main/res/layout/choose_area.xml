@@ -24,9 +24,23 @@
             android:layout_alignParentLeft="true"
             android:background="@drawable/backup"/>
         </RelativeLayout>
-    <ListView
-        android:background="#fff"
-        android:id="@+id/list_view"
+
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        >
+        <ImageView
+            android:id="@+id/menu_bk"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/menubk"
+            android:scaleType="fitXY"/>
+        <ListView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        </FrameLayout>
+
+
 </LinearLayout>

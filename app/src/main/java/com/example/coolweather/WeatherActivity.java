@@ -112,7 +112,8 @@ public class WeatherActivity extends AppCompatActivity {
         });
         String bingPic=prefs.getString("bing_pic",null);
         if(bingPic!=null){
-            Glide.with(this).load(bingPic).into(bingPicImg);
+            Glide.with(this).load(R.drawable.hxbk).into(bingPicImg);
+            Log.d("png","yes");
         }
         else{
             loadBingPic();
@@ -138,7 +139,7 @@ public class WeatherActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Glide.with(WeatherActivity.this).load(bingPic).into(bingPicImg);
+                        Glide.with(WeatherActivity.this).load(R.drawable.hxbk).into(bingPicImg);
                     }
                 });
 
