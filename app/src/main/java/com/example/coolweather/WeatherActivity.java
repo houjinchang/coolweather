@@ -50,7 +50,7 @@ public class WeatherActivity extends AppCompatActivity {
     private ImageView bingPicImg;
 
     public SwipeRefreshLayout swipeRefresh;
-    private String mWeatherId;
+    public String mWeatherId;
 
     public DrawerLayout drawerLayout;
     private Button navButton;
@@ -86,20 +86,20 @@ public class WeatherActivity extends AppCompatActivity {
         //读取天气数据
         SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString=prefs.getString("weather",null);
+        Log.d("refresh",weatherString);
         if(weatherString!=null){
             //有缓存时候直接解析天气数据
-            Log.d("WeatherActivity","onCreate"+weatherString);
+
             Weather weather= Utility.handleWeatherResponse(weatherString);
-            mWeatherId=weather.basic.weatherId;
+            mWeatherId=weather.basic.weatherId; Log.d("mweatherId","有缓存"+mWeatherId);
             showWeatherInfo(weather);
         }
         else{
             //无缓存时候去服务器查询数据
-
-            String weatherId=getIntent().getStringExtra("weather_id");
-            mWeatherId=weatherId;
+            mWeatherId=getIntent().getStringExtra("weather_id");
+            Log.d("mweatherId","无缓存"+mWeatherId);
             weatherLayout.setVisibility(View.INVISIBLE);
-            requestWeather(weatherId);
+            requestWeather(mWeatherId);
         }
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -172,6 +172,8 @@ public class WeatherActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
                             editor.putString("weather",responseText);
                             editor.apply();
+//                            mWeatherId=weather.basic.weatherId;
+                            Log.d("mweatherId","获取之后"+mWeatherId);
                             showWeatherInfo(weather);
 
                         }else{
