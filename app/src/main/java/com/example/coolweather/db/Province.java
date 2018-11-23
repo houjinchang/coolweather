@@ -5,31 +5,32 @@ import org.litepal.crud.DataSupport;
 /**
  * Created by 29208 on 2018/11/19.
  */
-public class Province extends DataSupport{
-    private int id;//
+public class Province extends DataSupport {
 
-    private String provinceName;//记录省的名字
+    private int id;
 
-    private int provinceCode;//记录省的代号
+    private String provinceName;
 
-    public int getId(){
+    private int provinceCode;
+
+    public int getId() {
         return id;
-    }
-
-    public String getProvinceName() {
-        return provinceName;
-    }
-
-    public int getProvinceCode() {
-        return provinceCode;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
+    public String getProvinceName() {
+        return provinceName;
+    }
+
     public void setProvinceName(String provinceName) {
         this.provinceName = provinceName;
+    }
+
+    public int getProvinceCode() {
+        return provinceCode;
     }
 
     public void setProvinceCode(int provinceCode) {
