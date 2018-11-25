@@ -46,6 +46,7 @@
             android:layout_gravity="start"
 
             />
+        <!-- fragment的复用-->
 
     </android.support.v4.widget.DrawerLayout>
 

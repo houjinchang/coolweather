@@ -39,6 +39,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 /**
+ * 这个fragment被两个界面使用，，，这就是fragment的好处，，可以多次使用
  * Created by 29208 on 2018/11/19.
  */
 public class ChooseAreaFragment extends Fragment {
@@ -77,12 +78,15 @@ public class ChooseAreaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //获取插入了布局（layout）的view,,,,关联fragment布局
         View view = inflater.inflate(R.layout.choose_area, container, false);
+        //获取其中的控件实例
         titleText = (TextView) view.findViewById(R.id.title_text);
         backButton = (Button) view.findViewById(R.id.back_button);
         listView = (ListView) view.findViewById(R.id.list_view);
         menubk=view.findViewById(R.id.menu_bk);
         Glide.with(this).load(R.drawable.menubk).into(menubk);
+//        给其中的listView设置适配器，，，直接使用系统自带的适配器，ArrayAdapter传入context，子布局，，，string list
         adapter = new ArrayAdapter<>(getContext(), R.layout.listview_item, dataList);
         listView.setAdapter(adapter);
         Log.d("ChooseAreaFragment","onCreateView");
@@ -95,29 +99,41 @@ public class ChooseAreaFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.d("ChooseAreaFragment","onActivityCreated");
-        //点击前进事件,
+        //点击前进事件,使用setOnItemClickListener,.,,专用于列表的点击事件
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
+            @Override//回调方法，onItemClick回调AdapterView    view,position id
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (currentLevel == LEVEL_PROVINCE) {//省级
                     selectedProvince = provinceList.get(position);//设置当前选中的
-                    queryCities();
-                } else if (currentLevel == LEVEL_CITY) {
+                    queryCities();//省级降级 查询
+                }
+                else if (currentLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(position);//设置当前选中的东西
-                    queryCounties();
-                }else if(currentLevel==LEVEL_COUNTY){
-                    String weatherId=countyList.get(position).getWeatherId();
-                    if(getActivity() instanceof MainActivity){
+                    queryCounties();//市级降级查询
+                }
 
+                //如果已经是最低级，
+                else if(currentLevel==LEVEL_COUNTY){
+                    //获取weatherId，，，，根据position获取County对象   从而获取weatherid
+                    String weatherId=countyList.get(position).getWeatherId();
+
+                    //instanceof 判断当前活动是哪个活动的对象，，，
+                    if(getActivity() instanceof MainActivity){
+                        //若为MainActivity对象，就跳转，，并且向weartherActivity传入weatherId,intent跳转传数据法
                         Intent intent=new Intent(getActivity(), WeatherActivity.class);
-                        intent.putExtra("weather_id",weatherId);
+                        intent.putExtra("weather_id", weatherId);
                         startActivity(intent);
-                        getActivity().finish();
+                        getActivity().finish();//结束当前活动
                     }
+                    //如果已经在weatherActicity中，
                     else if(getActivity() instanceof WeatherActivity){
+//                        获取当前活动实例
                         WeatherActivity activity= (WeatherActivity) getActivity();
+                        //调用weatherActivity抽屉布局的关闭抽屉方法
                         activity.drawerLayout.closeDrawer(GravityCompat.START);
+                        //刷新布局
                         activity.swipeRefresh.setRefreshing(true);
+//                        根据天气id请求城市天气信息
                         activity.requestWeather(weatherId);
 //                        activity.mWeatherId=weatherId;
                     }
@@ -207,8 +223,8 @@ public class ChooseAreaFragment extends Fragment {
      */
     private void showProgressDialog() {
         if (progressDialog == null) {
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage("正在加载...");
+            progressDialog = new ProgressDialog(getActivity());//传context构造ProgressDialog对象
+            progressDialog.setMessage("正在加载...");//设置文字
             progressDialog.setCanceledOnTouchOutside(false);
         }
         progressDialog.show();
@@ -275,6 +291,7 @@ public class ChooseAreaFragment extends Fragment {
         Log.d("ChooseAreaFragment","queryCounties");
         titleText.setText(selectedCity.getCityName());
         backButton.setVisibility(View.VISIBLE);
+        //countryList初始化，，，根据DataSupport类获取，，需要根据城市id和雷鸣一起查询，，因为三个级别的地区类都继承了DataSupport而且每次构造对象都会采取save方法保存，，，因此亦能够通过DataSupport找到这些对象
         countyList=DataSupport.where("cityid=?",String.valueOf(selectedCity.getId())).find(County.class);
         if(countyList.size()>0){
             dataList.clear();
