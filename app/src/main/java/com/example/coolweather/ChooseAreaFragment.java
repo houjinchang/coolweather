@@ -155,7 +155,7 @@ public class ChooseAreaFragment extends Fragment {
         });
 //        String address="http://guolin.tech/api/china";
 //        queryFromServer(address, "province");
-        queryProvinces();//******************************************************************
+        queryProvinces();//从这里开始加载省级数据*****************************
     }
 
     //向服务器发出数据请求信息
@@ -171,7 +171,8 @@ public class ChooseAreaFragment extends Fragment {
             @Override//失败，弹出加载失败，，关闭正在加载
             public void onFailure(Call call, IOException e) {
                 Log.d("ChooseAreaFragment","queryFromServer.onFailure");
-                getActivity().runOnUiThread(new Runnable() {//由于要进行ui操作，，，所也要开辟一个新的线程
+                getActivity().runOnUiThread(new Runnable() {
+                //由于要进行ui操作，，，要从子线程切换到主线程
                     @Override
                     public void run() {
                         closeProgressDialog();
@@ -203,6 +204,7 @@ public class ChooseAreaFragment extends Fragment {
                         public void run() {
                             closeProgressDialog();
                             if ("province".equals(type)) {
+                                //解析和处理完 数据之后，，重新调用queryProvince重新加载省级数据
                                 queryProvinces();
                             } else if ("city".equals(type)) {
                                 queryCities();
@@ -246,11 +248,14 @@ public class ChooseAreaFragment extends Fragment {
 
     //以下三个方法主要就是三个控件的初始化，，，，刷新listView。以及改变当前level
     private void queryProvinces(){
-        Log.d("ChooseAreaFragment","queryProvince");
+//        Log.d("ChooseAreaFragment","queryProvince");
         titleText.setText("中国");
-        backButton.setVisibility(View.GONE);//back可见性
+        //把标题设为中国，，，当前属于省级
+        backButton.setVisibility(View.GONE);//back可见性设为不可见
+
 
         //省列表初始化，，DataSupport.findAll（class）所有的该class的对象findAll
+        //litepal查询接口
         provinceList= DataSupport.findAll(Province.class);
         if(provinceList.size()>0){
             dataList.clear();//清空当前列表
@@ -263,6 +268,7 @@ public class ChooseAreaFragment extends Fragment {
 
         }else{//首次申请，需要向网站获取数据
             String address="http://guolin.tech/api/china";
+
             queryFromServer(address, "province");
         }
 

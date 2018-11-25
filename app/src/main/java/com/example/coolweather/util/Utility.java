@@ -40,7 +40,7 @@ public class Utility {
                     Province province = new Province();
                     province.setProvinceName(provinceObject.getString("name"));
                     province.setProvinceCode(provinceObject.getInt("id"));
-//                    调用save方法
+//                    调用save方法存储到数据库中
                     province.save();
 
 //                    Log.d("houjinchang", province.getProvinceName() + " " + province.getProvinceCode() + " id=" + provinceObject.getInt("id")+" result"+x);

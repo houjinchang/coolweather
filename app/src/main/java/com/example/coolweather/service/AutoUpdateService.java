@@ -34,13 +34,22 @@ public class AutoUpdateService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         updateWeather();
         updateBingPic();
+
+
+        //定时自启动
         AlarmManager manager= (AlarmManager) getSystemService(ALARM_SERVICE);
-        int anHour=8*60*60*1000;
-        long triggerAtTime= SystemClock.elapsedRealtime()+anHour;
-        Intent i=new Intent(this,AutoUpdateService.class);
+        int anHour=8*60*60*1000;//八小时
+        long triggerAtTime= SystemClock.elapsedRealtime()+anHour    ;//设置触发事件，首次启动加上八个小时
+
+
+        Intent i=new Intent(this,AutoUpdateService.class);//构建一个intent模型
+
+        //获取PendingIntent实例,调用PendingIntent.getService()来获取，，，需要传入this context和intent模型
         PendingIntent pi=PendingIntent.getService(this,0,i,0);
+
         manager.cancel(pi);
-        manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,triggerAtTime,pi);
+
+        manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,triggerAtTime,pi);//第一个参数是模式，其次是触发时间，最后是PendingIntent
         return  super.onStartCommand(intent, flags, startId);
     }
 

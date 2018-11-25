@@ -9,7 +9,7 @@ public class Basic {
     @SerializedName("city")
     public String cityName ;
 
-    @SerializedName("id")
+    @SerializedName("id")//@SerializedName()注解的方式让json字段跟Java字段建立映射关系
     public String weatherId;
 
     public Update update;

@@ -186,7 +186,7 @@ public class WeatherActivity extends AppCompatActivity {
                         //如果传过来的weatherId不是空字符串，而且weather对象的status为ok,就把responseText存进sp(存储键值对)，也就是response.body.string()
                         if(weatherId!=null&&"ok".equals(weather.status)){
                             SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
-                            editor.putString("weather",responseText);
+                            editor.putString("weather",responseText);//键值对存储
                             editor.apply();//提交存储
                             mWeatherId=weather.basic.weatherId;
 //                            Log.d("mweatherId","获取之后"+mWeatherId);
